@@ -33,7 +33,6 @@ body::before {
 }
 
 .container {
-    background-color: rgba(255, 255, 255, 0.7);
 
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.75);
 }
@@ -60,10 +59,13 @@ body::before {
     align-items: center;
 }
 .login-card{
+    background-color: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(5px);
     backface-visibility: hidden;
 }
 .register-card{
-
+    background-color: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(5px);
     transform: rotateY(180deg);
     backface-visibility: hidden;
 }
@@ -123,7 +125,8 @@ body::before {
     font-size: .8rem;
     margin-bottom: 1rem;
 }
-.bottom-text-container .button-register{
+.bottom-text-container .button-register,
+.bottom-text-container .button-login-open{
     background-color: #b2680e;
     padding: .6rem 3rem;
     border: none;
@@ -132,7 +135,8 @@ body::before {
     color: white;
     transition: .3s ease-in-out;
 }
- .bottom-text-container .button-register:hover {
+ .bottom-text-container .button-register:hover,
+ .bottom-text-container .button-login-open:hover {
     transform: translateY(-.5rem);
 }
 
