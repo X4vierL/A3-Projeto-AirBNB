@@ -1,11 +1,72 @@
-<!DOCTYPE html>
+<!DOCTYPE html>]
+
 <html lang="pt-br">
+    
+<?php 
+include ('C:\xampp\htdocs\A3---Projeto-AirBNB\config.php');
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $user = trim($_POST['user'] ?? '');
+    $password = md5(trim($_POST['password'] ?? ''));
+
+    if (@$_POST["button"] == "Cadastrar") {
+        $email = trim($_POST['email'] ?? '');
+
+        if (empty($user) || empty($email) || empty($password)) {
+            echo "<script>alert('Todos os campos são obrigatórios!');</script>";
+        } else {
+            if (empty($_REQUEST["id"])) {
+                $inserir = "INSERT INTO usuario (nome, email, senha, nivel) VALUES ('$user', '$email', '$password', 'USER')";
+                $result_inserir = mysqli_query($con, $inserir);
+
+                if ($result_inserir) {
+                    echo "<script>alert('Cadastro realizado com sucesso!');</script>";
+                } else {
+                    echo "<script>alert('Erro ao cadastrar o usuário!');</script>";
+                }
+            } else {
+                $atualizar = "UPDATE usuario SET 
+                    nome = '$user',
+                    email = '$email',
+                    senha = '$password'
+                    WHERE id = '{$_REQUEST['id']}'";
+                $result_atualizar = mysqli_query($con, $atualizar);
+
+                if ($result_atualizar) {
+                    echo "<script>alert('Registro atualizado com sucesso!');</script>";
+                } else {
+                    echo "<script>alert('Erro ao atualizar o registro!');</script>";
+                }
+            }
+        }
+    }
+
+    if (@$_POST["button"] == "Entrar") {
+        
+        if (empty($user) || empty($_POST['password'])) {
+            echo "<script>alert('Usuário e senha são obrigatórios!');</script>";
+        } else {
+            $login_query = "SELECT * FROM usuario WHERE nome = '$user' AND senha = $password"
+            $result_login = mysqli_query($con, $login_query);
+
+            if (mysqli_num_rows($result_login) > 0) {
+                echo "<script>alert('Login realizado com sucesso!');</script>";
+                echo "<script>window.location.href = 'config.php';</script>";
+            } else {
+                echo "<script>alert('Usuário ou senha incorretos!');</script>";
+            }
+        }
+    }
+}
+?>
+
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/login.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <title>A3 - TravelBnB</title>
@@ -18,16 +79,16 @@
                     <h1>Bem Vindo!</h1>
                     <p>Por gentileza, entre em sua conta.</p>
                 </div>
-                <form action="#" class="form-login">
-                    <label for="user" name="user" class="input-account">
+                <form action="#" name="usuario" method="POST" class="form-login">
+                    <label for="user" class="input-account">
                         <input type="text" name="user" id="user" placeholder="Usuário">
                         <i class="fa-solid fa-user"></i>
                     </label>
-                    <label for="password" name="password" class="input-account">
+                    <label for="password" class="input-account">
                         <input type="password" name="password" id="password" placeholder="Senha">
                         <i class="fa-solid fa-lock"></i>
                     </label>
-                    <input type="submit" value="Entrar" class="button-login">
+                    <input type="submit" value="Entrar" class="button-login" name="button">
                 </form>
                 <div class="bottom-text-container">
                     <p>Não tem conta? Clique abaixo <i class="fa-solid fa-arrow-down"></i></p>
@@ -35,24 +96,24 @@
                 </div>
             </div>
             <div class="card-face register-card">
-                 <div class="top-text-container">
+                <div class="top-text-container">
                     <h1>Bem Vindo!</h1>
                     <p>Preencha os dados para criar sua conta nova.</p>
                 </div>
-                <form action="#" class="form-register">
-                    <label for="user" name="user" class="input-account">
+                <form action="" name="usuario" method="POST" class="form-register">
+                    <label for="user" class="input-account">
                         <input type="text" name="user" id="user" placeholder="Usuário">
                         <i class="fa-solid fa-user"></i>
                     </label>
-                    <label for="email" name="email" class="input-account">
-                        <input type="text" name="email" id="email" placeholder="Email">
+                    <label for="email" class="input-account">
+                        <input type="email" name="email" id="email" placeholder="Email">
                         <i class="fa-solid fa-envelope"></i>
                     </label>
-                    <label for="password" name="password" class="input-account">
+                    <label for="password" class="input-account">
                         <input type="password" name="password" id="password" placeholder="Senha">
                         <i class="fa-solid fa-lock"></i>
                     </label>
-                    <input type="submit" value="Entrar" class="button-login">
+                    <input type="submit" value="Cadastrar" name="button" class="button-login">
                 </form> 
                 <div class="bottom-text-container">
                     <p>Já tem uma conta? Clique abaixo <i class="fa-solid fa-arrow-down"></i></p>
