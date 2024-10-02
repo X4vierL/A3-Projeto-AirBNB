@@ -4,6 +4,7 @@
     
 <?php 
 include ('C:\xampp\htdocs\A3---Projeto-AirBNB\config.php');
+session_start();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $user = trim($_POST['user'] ?? '');
@@ -41,19 +42,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 
-    if (@$_POST["button"] == "Entrar") {
-        
+    if (isset($_POST["button"]) && $_POST["button"] == "Entrar") {
+        $user = $_POST['user'];
+        $password = md5($_POST['password']);
+    
         if (empty($user) || empty($_POST['password'])) {
             echo "<script>alert('Usuário e senha são obrigatórios!');</script>";
         } else {
-            $login_query = "SELECT * FROM usuario WHERE nome = '$user' AND senha = $password"
+            $login_query = "SELECT * FROM usuario WHERE nome = '$user' AND senha = '$password'";
             $result_login = mysqli_query($con, $login_query);
 
-            if (mysqli_num_rows($result_login) > 0) {
-                echo "<script>alert('Login realizado com sucesso!');</script>";
-                echo "<script>window.location.href = 'config.php';</script>";
+            if ($result_login) {
+                if (mysqli_num_rows($result_login) > 0) {
+                    $coluna = mysqli_fetch_array($result_login);
+                    $_SESSION["id_usuario"] = $coluna["id"];
+                    $_SESSION["nome_usuario"] = $coluna["login"];
+                    header("Location: C:/xampp/htdocs/A3---Projeto-AirBNB/main-page/main-page.php");
+                    exit; 
+                } else {
+                    echo "<script>alert('Usuário ou senha incorretos!');</script>";
+                }
             } else {
-                echo "<script>alert('Usuário ou senha incorretos!');</script>";
+                echo "<script>alert('Erro na consulta ao banco de dados.');</script>";
             }
         }
     }
