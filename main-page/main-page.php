@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<?php include ('C:\xampp\htdocs\A3---Projeto-AirBNB\config.php'); ?>
+<?php 
+include ('C:\xampp\htdocs\A3---Projeto-AirBNB\config.php');  
+session_start();
+
+?>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,7 +16,11 @@
     <div class="container">
 
 <?php
-$sql = "SELECT criador, hospedes, quarto, camas, banheiros, contato, localidade, valor, descricao, status FROM anuncios WHERE status = 'pendente'";
+
+$status = ($_SESSION["nivel_usuario"] = 'USER' ? 'aprovado');
+
+$sql = "SELECT criador, hospedes, quarto, camas, banheiros, contato, localidade, valor, descricao, status FROM anuncios WHERE status = $status
+";
 $result = $con->query($sql);
 if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {

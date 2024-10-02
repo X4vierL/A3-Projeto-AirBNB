@@ -54,12 +54,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             if ($result_login) {
                 if (mysqli_num_rows($result_login) > 0) {
-                    $coluna = mysqli_fetch_array($result_login);
-                    $_SESSION["id_usuario"] = $coluna["id"];
-                    $_SESSION["nome_usuario"] = $coluna["login"];
-                    header("Location: C:/xampp/htdocs/A3---Projeto-AirBNB/main-page/main-page.php");
-                    exit; 
-                } else {
+                    while($coluna = mysqli_fetch_array($result_login)){
+                        $_SESSION["id_usuario"] = $coluna["id"];
+                        $_SESSION["nome_usuario"] = $coluna["nome"];
+                        $_SESSION["nivel_usuario"] = $coluna["nivel"];
+                        header("Location: http://localhost/A3---Projeto-AirBNB/main-page/main-page.php");
+                        exit;
+                }} else {
                     echo "<script>alert('Usuário ou senha incorretos!');</script>";
                 }
             } else {
