@@ -17,10 +17,15 @@ session_start();
 
 <?php
 
-$status = ($_SESSION["nivel_usuario"] = 'USER' ? 'aprovado');
+$sql = $_SESSION["nivel_usuario"] == 'ADM' 
+    ? "SELECT criador, hospedes, quarto, camas, banheiros, contato, localidade, valor, descricao, status 
+       FROM anuncios 
+       WHERE status IN ('pendente','aprovado','reprovado')" 
+    : "SELECT criador, hospedes, quarto, camas, banheiros, contato, localidade, valor, descricao, status 
+       FROM anuncios 
+       WHERE status = 'aprovado'";
 
-$sql = "SELECT criador, hospedes, quarto, camas, banheiros, contato, localidade, valor, descricao, status FROM anuncios WHERE status = $status
-";
+
 $result = $con->query($sql);
 if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
@@ -39,7 +44,10 @@ if ($result->num_rows > 0) {
 } else {
     echo "Nenhum anúncio encontrado.";
 }
+
         ?>
     </div>
 </body>
+<a href="http://localhost/A3---Projeto-AirBNB/logout.php"> sair </a> <br>
+<a href="http://localhost/A3---Projeto-AirBNB/cadastro-anuncios/cadastro-anuncios.php"> cadastrar anuncio </a>
 </html>
