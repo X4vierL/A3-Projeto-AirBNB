@@ -1,25 +1,31 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <?php 
-include ('C:\xampp\htdocs\A3---Projeto-AirBNB\config.php');  
-session_start();
+include ('C:\xampp\htdocs\A3---Projeto-AirBNB\config.php');
+require ('C:\xampp\htdocs\A3---Projeto-AirBNB\verify.php');
 
 ?>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/meus-anuncios.css">
     <title>Anúncios</title>
 </head>
 <body>
-    <h1>Anúncios Disponíveis</h1>
+    <h1>Meus anúncios!</h1>
     <div class="container">
 
 <?php
 
-$sql = "SELECT id, criador, hospedes, quarto, camas, banheiros, contato, localidade, valor, descricao, status 
+$user = $_SESSION["id_usuario"];
+$criador = "SELECT * FROM usuario WHERE id = '$'";
+$sql = $_SESSION["nivel_usuario"] == 'ADM' 
+    ? "SELECT id, criador, hospedes, quarto, camas, banheiros, contato, localidade, valor, descricao, status 
        FROM anuncios 
-       WHERE status = 'aprovado'";
+       WHERE status IN ('pendente','reprovado')" 
+    : "SELECT id, criador, hospedes, quarto, camas, banheiros, contato, localidade, valor, descricao, status 
+       FROM anuncios 
+       WHERE criador = '$user'";
 
 
 $result = $con->query($sql);
@@ -44,11 +50,10 @@ if ($result && $result->num_rows > 0) {
 } else {
     echo "<p>Nenhum anúncio encontrado.</p>";
 }
-
-        ?>
+?>
     </div>
 </body>
 <a href="http://localhost/A3---Projeto-AirBNB/logout.php"> sair </a> <br>
 <a href="http://localhost/A3---Projeto-AirBNB/cadastro-anuncios/cadastro-anuncios.php"> cadastrar anuncio </a> <br>
-<a href="http://localhost/A3---Projeto-AirBNB/meus-anuncios/meus-anuncios.php"> meus anuncios </a> <br>
+<a href="http://localhost/A3---Projeto-AirBNB/main-page/main-page.php"> Home </a>
 </html>

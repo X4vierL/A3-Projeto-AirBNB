@@ -5,7 +5,6 @@
 <?php 
 include ('C:\xampp\htdocs\A3---Projeto-AirBNB\config.php');
 require ('C:\xampp\htdocs\A3---Projeto-AirBNB\verify.php');
-session_start();
 
 $id = $_SESSION["id_usuario"];
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
