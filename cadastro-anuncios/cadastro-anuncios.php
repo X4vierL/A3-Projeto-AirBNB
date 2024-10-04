@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-
 <html lang="pt-br">
-    
 <?php 
 include ('C:\xampp\htdocs\A3---Projeto-AirBNB\config.php');
 require ('C:\xampp\htdocs\A3---Projeto-AirBNB\verify.php');
@@ -40,49 +38,65 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->close();
     }
 }
-
 ?>
-    <head>
+<head>
     <meta charset="UTF-8">
     <title>A3 - TravelBnB</title>
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
+<div class="container">
+    <header>
+        <h1>Criação de Anúncios</h1>
+    </header>
 
-    <h2>Cadastro de Anúncio</h2>
-    
-    <form action="cadastro-anuncios.php" method="POST" enctype="multipart/form-data">
-        <label for="hospedes">Número de Hóspedes:</label>
-        <input type="number" id="hospedes" name="hospedes" required><br><br>
+    <nav class="sidebar">
+        <ul>
+            <li><a href="#">Item 1</a></li>
+            <li><a href="#">Item 2</a></li>
+            <li><a href="#">Item 3</a></li>
+        </ul>
+    </nav>
 
-        <label for="quarto">Número de Quartos:</label>
-        <input type="number" id="quarto" name="quarto" required><br><br>
+    <main class="main-container">
+        <div class="form-container">
+            <h2>Formulário</h2>
+            <form action="cadastro-anuncios.php" method="POST" enctype="multipart/form-data">
+                <label for="hospedes">Quantidade de Hóspedes:</label>
+                <input type="number" id="hospedes" name="hospedes" required><br>
 
-        <label for="camas">Número de Camas:</label>
-        <input type="number" id="camas" name="camas" required><br><br>
+                <label for="quarto">Número de Quartos:</label>
+                <input type="number" id="quarto" name="quarto" required><br>
 
-        <label for="banheiros">Número de Banheiros:</label>
-        <input type="number" id="banheiros" name="banheiros" required><br><br>
+                <label for="camas">Número de Camas:</label>
+                <input type="number" id="camas" name="camas" required><br>
 
-        <label for="contato">Contato (telefone):</label>
-        <input type="text" id="contato" name="contato" maxlength="20" required><br><br>
+                <label for="banheiros">Número de Banheiros:</label>
+                <input type="number" id="banheiros" name="banheiros" required><br>
 
-        <label for="localidade">Localidade:</label>
-        <input type="text" id="localidade" name="localidade" maxlength="20" required><br><br>
+                <label for="contato">Contato (telefone):</label>
+                <input type="text" id="contato" name="contato" maxlength="20" required><br>
 
-        <label for="valor">Valor (em reais):</label>
-        <input type="number" id="valor" name="valor" required><br><br>
+                <label for="localidade">Localidade:</label>
+                <input type="text" id="localidade" name="localidade" maxlength="20" required><br>
 
-        <label for="imagem">Imagem do Imóvel:</label>
-        <input type="file" id="imagem" name="imagem" accept="image/*"><br><br>
+                <label for="valor">Valor (em reais):</label>
+                <input type="number" id="valor" name="valor" required><br>
 
-        <label for="descricao">Descrição:</label>
-        <textarea id="descricao" name="descricao" maxlength="255" required></textarea><br><br>
-    <br><br>
+                <label for="imagem">Imagem do Imóvel:</label>
+                <input type="file" id="imagem" name="imagem" accept="image/*"><br>
 
-        <input type="submit" value="Cadastrar Anúncio">
-    </form>
+                <label for="descricao">Descrição:</label>
+                <textarea id="descricao" name="descricao" maxlength="255" required></textarea><br><br>
 
+                <input type="submit" value="Salvar">
+            </form>
+            <a href="http://localhost/A3---Projeto-AirBNB/main-page/main-page.php">Voltar</a>
+        </div>
+    </main>
+</div>
 </body>
-<br>
-<a href="http://localhost/A3---Projeto-AirBNB/main-page/main-page.php"> voltar </a>
 </html>
+
+
+        
