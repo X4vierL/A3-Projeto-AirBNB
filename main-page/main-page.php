@@ -50,5 +50,5 @@ if ($result && $result->num_rows > 0) {
 </body>
 <a href="http://localhost/A3---Projeto-AirBNB/logout.php"> sair </a> <br>
 <a href="http://localhost/A3---Projeto-AirBNB/cadastro-anuncios/cadastro-anuncios.php"> cadastrar anuncio </a> <br>
-<a href="http://localhost/A3---Projeto-AirBNB/meus-anuncios/meus-anuncios.php"> meus anuncios </a> <br>
+<a href="http://localhost/A3---Projeto-AirBNB/meus-anuncios/meus-anuncios.php"> <?php echo ($_SESSION["nivel_usuario"] == 'ADM') ? 'Anúncios pendentes.' : 'Meus anúncios!'; ?> </a> <br>
 </html>

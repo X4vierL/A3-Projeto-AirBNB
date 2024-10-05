@@ -12,7 +12,8 @@ require ('C:\xampp\htdocs\A3---Projeto-AirBNB\verify.php');
     <title>Anúncios</title>
 </head>
 <body>
-    <h1>Meus anúncios!</h1>
+    <h1><?php echo ($_SESSION["nivel_usuario"] == 'ADM') ? 'Anúncios pendentes.' : 'Meus anúncios!'; ?>
+    </h1>
     <div class="container">
 
 <?php
