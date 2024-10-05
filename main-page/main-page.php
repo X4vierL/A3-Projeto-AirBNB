@@ -9,46 +9,94 @@ session_start();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <title>Anúncios</title>
 </head>
 <body>
-    <h1>Anúncios Disponíveis</h1>
+<header class="header-main">
+         <div class="logo">
+            <i class="fa-regular fa-map"> Travel BnB</i>
+         </div>
+         <div class="filters-header">
+            <label for="hospede" class="filter-label">
+                <input type="number" name="hospede" id="hospede" placeholder="N° de hospedes">
+                <i class="fa-solid fa-people-roof"></i>
+            </label>
+            <label for="Quartos" class="filter-label">
+                <input type="number" name="Quartos" id="Quartos" placeholder="N° de quartos">
+                <i class="fa-solid fa-bed"></i>
+            </label>
+                <label for="Valor" class="filter-label">
+                <input type="" name="Valor" id="Valor" placeholder="Valor máximo">
+                <i class="fa-solid fa-dollar-sign"></i>
+            </label>
+            <label for="Localidade" class="filter-label">
+                <input type="text" name="Localidade" id="Localidade" placeholder="Localidade">
+                <i class="fa-solid fa-location-dot"></i>
+            </label>
+
+         </div>
+         <div class="login-button">
+            <button>Faça login <i class="fa-solid fa-user"></i></button>
+         </div>
+    </header>
+
     <div class="container">
+        <nav class="sidebar">
+            <ul>
+                <li><a href="http://localhost/A3---Projeto-AirBNB/cadastro-anuncios/cadastro-anuncios.php"> cadastrar anuncio </a></li>
+                <li><a href="http://localhost/A3---Projeto-AirBNB/logout.php"> sair </a></li>
+                <li><a href="http://localhost/A3---Projeto-AirBNB/meus-anuncios/meus-anuncios.php"> <?php echo ($_SESSION["nivel_usuario"] == 'ADM') ? 'Anúncios pendentes.' : 'Meus anúncios!'; ?> </a></li>
+            </ul>
+            
 
-<?php
+        </nav>
 
-$sql = "SELECT id, criador, hospedes, quarto, camas, banheiros, contato, localidade, valor, descricao, status 
-       FROM anuncios 
-       WHERE status = 'aprovado'";
+        <main class="container-anuncios">
+            <h1 class="title">Anúncios Disponíveis</h1>
+            <div class="container-cards">
+                <?php
+                $sql = "SELECT criador, hospedes, quarto, camas, banheiros, contato, localidade, valor, descricao, status FROM anuncios WHERE status = 'pendente'";
+                $result = $con->query($sql);
+                if ($result->num_rows > 0) {
+                    while($row = $result->fetch_assoc()) {
+                        // <div class="card">
 
-
-$result = $con->query($sql);
-if ($result && $result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $anuncio_link = "http://localhost/A3---Projeto-AirBNB/anuncio/anuncio.php?id="  . $row['id'];
-
-        echo "<div class='card'>";
-        echo "<a href='" . $anuncio_link . "'>";
-        echo "<h3>Localidade: " . htmlspecialchars($row['localidade']) . "</h3>";
-        echo "<p><strong>Hospedes:</strong> " . htmlspecialchars($row['hospedes']) . "</p>";
-        echo "<p><strong>Quartos:</strong> " . htmlspecialchars($row['quarto']) . "</p>";
-        echo "<p><strong>Camas:</strong> " . htmlspecialchars($row['camas']) . "</p>";
-        echo "<p><strong>Banheiros:</strong> " . htmlspecialchars($row['banheiros']) . "</p>";
-        echo "<p><strong>Contato:</strong> " . htmlspecialchars($row['contato']) . "</p>";
-        echo "<p><strong>Valor:</strong> R$ " . htmlspecialchars($row['valor']) . "</p>";
-        echo "<p><strong>Descrição:</strong> " . htmlspecialchars($row['descricao']) . "</p>";
-        echo "<p><strong>Status:</strong> " . htmlspecialchars($row['status']) . "</p>";
-        echo "</a>";
-        echo "</div>";
-    }
-} else {
-    echo "<p>Nenhum anúncio encontrado.</p>";
-}
-
-        ?>
+                        // </div>
+                        echo "<div class='card'>";
+                            echo "<h1>IMAGEM DA PORRA DO ANUNCIO</h1>";
+                            echo "<div class='card-text-content'>";
+                                echo "<div class='rooms-value'>";
+                                    echo "<div class='values'>";
+                                        echo "<i class='fa-solid fa-bed'><p>"  . $row['camas'] ."</p></i>";
+                                    echo "</div>";
+                                    echo "<div class='values'>";
+                                        echo "<i class='fa-solid fa-toilet'><p>"  . $row['banheiros'] ."</p></i>";
+                                    echo "</div>";
+                                    // echo "<div class='values'>";
+                                    //     echo "<i class='fa-solid fa-bed'><p>"  . $row['quarto'] ."</p></i>";
+                                    // echo "</div>";
+                                    // echo "<p>Banheiros: " . $row['banheiros'] . "</p>";
+                                    // echo "<p>Quartos: " . $row['quarto'] . "</p>";
+                                    // echo "<p>Descrição: " . $row['descricao'] . "</p>";
+                                    // echo "<p>Status: " . $row['status'] . "</p>";
+                                echo "</div>";
+                                echo "<div class='info-value'>";
+                                    echo "<p>" . $row['localidade'] . "</p>";
+                                    echo "<p>Contato: " . $row['contato'] . "</p>";
+                                    echo "<p>Valor: R$ " . $row['valor'] . "</p>";
+                                echo "</div>";
+                            echo "</div>";
+                        echo "</div>";
+                    }
+                } else {
+                    echo "Nenhum anúncio encontrado.";
+                }
+                        ?>
+            </div>
+        </main>
     </div>
+
 </body>
-<a href="http://localhost/A3---Projeto-AirBNB/logout.php"> sair </a> <br>
-<a href="http://localhost/A3---Projeto-AirBNB/cadastro-anuncios/cadastro-anuncios.php"> cadastrar anuncio </a> <br>
-<a href="http://localhost/A3---Projeto-AirBNB/meus-anuncios/meus-anuncios.php"> <?php echo ($_SESSION["nivel_usuario"] == 'ADM') ? 'Anúncios pendentes.' : 'Meus anúncios!'; ?> </a> <br>
+
 </html>
