@@ -1,115 +1,210 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+:root{
+  --primaryColor: #b2680e;
+  --primaryColorOpa: #b2680e9d;
+  --colorFocus: #FCA61C;
 }
-
-body {
-    background-image: url(../img/bg.jpg); 
-    background-size: cover;
-    background-position: center;
-    height: 100vh;
+*{
+  font-family: 'Poppins', sans-serif;
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+  text-decoration: none;
 }
-
-.container {
-    display: grid;
-    grid-template-columns: 200px 1fr;
-    grid-template-rows: auto 1fr;
-    grid-template-areas: 
-        "header header"
-        "sidebar main";
-    height: 100vh;
-    width: 100%;
-}
-
-header {
-    grid-area: header;
-    background-color: #b2680e;
+.header-main {
     color: white;
+    padding: 1rem;
+    background-color: var(--primaryColor);
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    width: calc(100% - 250px); 
+    margin-left: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+  }
+  
+  .header-main .login-button button {
+    border: none;
+    padding: .5rem; 
+    background-color: white;
+    /* color: var(--primaryColor); */
+    border-radius: 8px;
+    font-weight: 600;
+    letter-spacing: 1.1px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+    margin-right: 2rem;
+  }
+  .header-main .login-button button a{
+    color: var(--primaryColor);
+  }
+  .header-main .login-button button:hover a{
+      color: white;
+  }
+  .header-main .login-button button:hover{
+    background-color: var(--colorFocus);
+  }
+  .container {
+    position: relative;
+    height: 100%;
+    display: flex;
+    margin-left: 125px;
+    margin-top: 3rem;
+  }
+  .container .sidebar{
+    width: 250px;
+    height: 100vh; 
+    background: linear-gradient(180deg, rgba(178,104,14,1) 10%, var(--primaryColorOpa) 90%);
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 0 0 0; 
+  }
+  
+  .sidebar .logo{
+    color: white;
+    padding: 1rem;
+    font-size: 1.5rem;
     text-align: center;
-    padding: 20px;
-    font-size: 24px;
-}
-
-.sidebar {
-    grid-area: sidebar;
-    background-color: #b2680e8d;
-    color: white;
-    padding: 20px;
-    height: 100%; 
-}
-
-.sidebar ul {
+    transform: translateY(-1rem); 
+  }
+  
+  .sidebar ul{
+    margin-top: 25rem;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     list-style-type: none;
-}
-
-.sidebar ul li a {
-    color: white;
-    text-decoration: none;
+    text-align: center;
+    width: 100%;
+  }
+  
+  .sidebar ul li{
+    margin-bottom: 1.5rem;
+    background-color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 1rem;
+    width: 60%;
     display: block;
-    padding: 10px 0;
+    transition: 0.3s ease-in-out;
 }
 
-.sidebar ul li a:hover {
-    background-color: #b2680e;
-    border-radius: 5px;
-}
-
-.main-container {
-    grid-area: main;
+.sidebar ul li a{
+    color: var(--primaryColorOpa);
+    /* color: white; */
+    font-size: 1.1rem;
+    text-decoration: none;
+  }
+  
+  .sidebar ul li:hover{
+    /* background-color: var(--primaryColor); */
+    transform: translateX(1rem);
+  }
+  .main-container{
+    /* background-color: red; */
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
-    margin: 0;
-}
-
-.form-container {
-    background-color: rgba(255, 255, 255, 0.9); 
-    padding: 20px;
-    border-radius: 10px;
-    width: 100%;
-    max-width: 600px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-h2 {
-    margin-bottom: 20px;
-    font-size: 22px;
-}
-
-label {
-    display: block;
-    font-size: 14px;
-    margin-bottom: 5px;
-}
-
-input[type="text"], input[type="number"], input[type="file"], textarea {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 14px;
-}
-
-textarea {
-    resize: none;
-    height: 100px;
-}
-
-input[type="submit"] {
-    padding: 10px;
-    width: 100%;
-    border: none;
-    background-color: #b2680e;
+  }
+  .form-container{
+    border-radius: 1rem;
+    margin-top: 3rem;
+    padding: 1rem;
+    background-color: var(--primaryColorOpa);
     color: white;
-    font-size: 16px;
-    border-radius: 8px;
+  }
+  .form-container h2{
+    text-align: center;
+    color: var(--primaryColor);
+    margin-bottom: 1rem;
+  }
+  .input-style{
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+    align-items: center;
+    gap: .5rem;
+  }
+  .hover-effect{
+    transition: 0.1s ease-in-out;
+  }
+  .hover-effect:focus,
+  .hover-effect:hover{
+    transform: translateY(-.3rem);
+    color: var(--colorFocus);
+  }
+  .input-style i{
+    width: 1rem;
+  }
+  .input-group-one-row .input-style{
+    /* background-color: red; */
+    margin-bottom: 1rem;
+  }
+  .input-group-one-row .input-style input{
+    display: flex;
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: .3rem;
+    border-radius: .3rem;
+  }
+  .input-group-two-row{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: .8rem;
+  }
+  .input-group-two-row .input-style input{
+    border: none;
+    outline: none;
+    padding: .3rem;
+    border-radius: .3rem;
+  }
+  .input-group-one-row .text-area{
+    justify-content: left;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .input-group-one-row .text-area textarea{
+    padding: .5rem .3rem ;
+    width: 100%;
+  }
+  .img{
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+  }
+  .buttons{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .buttons a{
+    text-decoration: underline;
+    transition: 0.3s ease-in-out;
+  }
+  .buttons a:hover{
+    transform: translateY(-.3rem);
+  }
+  .buttons input{
     cursor: pointer;
-}
-
-input[type="submit"]:hover {
-    background-color: #b2680e;
-}
+    border: none;
+    outline: none;
+    background-color: var(--primaryColor);
+    padding: .5rem 4rem;
+    border-radius: 1rem;
+    color: white;
+    display: inline-block;
+    transition: 0.3s ease-in-out;
+  }
+  .buttons input:hover{
+    transform: translateY(-.3rem);
+  }
