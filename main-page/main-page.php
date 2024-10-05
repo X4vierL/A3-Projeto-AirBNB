@@ -66,7 +66,6 @@ session_start();
                         } else {
                             echo "Imagem não encontrada.";
                         }
-                        
                             echo "<div class='card-text-content'>";
                                 echo "<div class='info-value'>";
                                     echo "<p>" . $row['localidade'] . "</p>";
