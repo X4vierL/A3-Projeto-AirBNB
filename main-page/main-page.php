@@ -25,7 +25,7 @@ $sql = "SELECT id, criador, hospedes, quarto, camas, banheiros, contato, localid
 $result = $con->query($sql);
 if ($result && $result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-        $anuncio_link = "anuncio.php?id=" . $row['id'];
+        $anuncio_link = "http://localhost/A3---Projeto-AirBNB/anuncio/anuncio.php?id="  . $row['id'];
 
         echo "<div class='card'>";
         echo "<a href='" . $anuncio_link . "'>";

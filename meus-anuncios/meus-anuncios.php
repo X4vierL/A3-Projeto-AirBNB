@@ -18,7 +18,6 @@ require ('C:\xampp\htdocs\A3---Projeto-AirBNB\verify.php');
 <?php
 
 $user = $_SESSION["id_usuario"];
-$criador = "SELECT * FROM usuario WHERE id = '$'";
 $sql = $_SESSION["nivel_usuario"] == 'ADM' 
     ? "SELECT id, criador, hospedes, quarto, camas, banheiros, contato, localidade, valor, descricao, status 
        FROM anuncios 
@@ -31,7 +30,7 @@ $sql = $_SESSION["nivel_usuario"] == 'ADM'
 $result = $con->query($sql);
 if ($result && $result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-        $anuncio_link = "anuncio.php?id=" . $row['id'];
+        $anuncio_link = "http://localhost/A3---Projeto-AirBNB/anuncio/anuncio.php?id=" . $row['id'];
 
         echo "<div class='card'>";
         echo "<a href='" . $anuncio_link . "'>";
