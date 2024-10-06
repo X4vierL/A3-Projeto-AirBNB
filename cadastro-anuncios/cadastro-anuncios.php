@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<?php 
+<?php
 include ('C:\xampp\htdocs\A3---Projeto-AirBNB\config.php');
 require ('C:\xampp\htdocs\A3---Projeto-AirBNB\verify.php');
 
@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $localidade = trim($_POST['localidade'] ?? '');
     $valor = trim($_POST['valor'] ?? '');
     $descricao = trim($_POST['descricao'] ?? '');
-    $status = trim($_POST['status'] ?? '');
+    $status = 'pendente';
 
     if (empty($hospedes) || empty($quarto) || empty($camas) || 
         empty($banheiros) || empty($contato) || empty($localidade) || empty($valor) || 
@@ -22,23 +22,61 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         echo "<script>alert('Todos os campos são obrigatórios!');</script>";
     } else {
         $imagem = null;
-        if (isset($_FILES['imagem']) && $_FILES['imagem']['error'] == UPLOAD_ERR_OK) {
-            $imagem = file_get_contents($_FILES['imagem']['tmp_name']);
-        }
-        $inserir = "INSERT INTO anuncios (criador, hospedes, quarto, camas, banheiros, contato, localidade, valor, imagem, descricao, status) 
-                    VALUES ('$id', '$hospedes', '$quarto', '$camas', '$banheiros', '$contato', '$localidade', '$valor', ?, '$descricao', 'pendente')";
-        $stmt = $con->prepare($inserir);
-        $stmt->bind_param("b", $imagem);
-        
-        if ($stmt->execute()) {
-            echo "<script>alert('Anúncio cadastrado com sucesso!');</script>";
+        if (isset($_FILES['imagem']) && $_FILES['imagem']['error'] === UPLOAD_ERR_OK) {
+            $tipoArquivo = mime_content_type($_FILES['imagem']['tmp_name']);
+            $tamanhoArquivo = $_FILES['imagem']['size'];
+
+            if (($tipoArquivo == 'image/png' || $tipoArquivo == 'image/jpeg') && $tamanhoArquivo <= 2097152) {
+                $imagem = file_get_contents($_FILES['imagem']['tmp_name']);
+                if ($imagem === false) {
+                    echo "<script>alert('Erro ao carregar a imagem.');</script>";
+                    $imagem = null;
+                } else {
+                    echo "<script>console.log('Imagem carregada com sucesso, tamanho: " . strlen($imagem) . " bytes.');</script>";
+                }
+            } else {
+                echo "<script>alert('A imagem deve ser JPG/PNG e menor que 2MB.');</script>";
+                $imagem = null;
+            }
         } else {
-            echo "<script>alert('Erro ao cadastrar o anúncio!');</script>";
+            echo "<script>alert('Erro ao fazer upload da imagem.');</script>";
+            return;
         }
-        $stmt->close();
+        if ($imagem !== null) {
+            $inserir = "INSERT INTO anuncios (criador, hospedes, quarto, camas, banheiros, contato, localidade, valor, imagem, descricao, status) 
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $stmt = $con->prepare($inserir);
+            $stmt->bind_param("iiiiiissbss", $id, $hospedes, $quarto, $camas, $banheiros, $contato, $localidade, $valor, $imagem, $descricao, $status);
+
+            if ($stmt->execute()) {
+                echo "<script>alert('Anúncio cadastrado com sucesso!');</script>";
+                $ultimoId = $con->insert_id;
+                $consulta = "SELECT imagem FROM anuncios WHERE id = ?";
+                $stmtConsulta = $con->prepare($consulta);
+                $stmtConsulta->bind_param("i", $ultimoId);
+                $stmtConsulta->execute();
+                $stmtConsulta->bind_result($imagemCadastrada);
+                $stmtConsulta->fetch();
+
+                if ($imagemCadastrada) {
+                    $imagemBase64 = base64_encode($imagemCadastrada);
+                    echo "<div><h3>Imagem cadastrada:</h3><img src='data:image/jpeg;base64,{$imagemBase64}' alt='Imagem cadastrada' /></div>"; 
+                } else {
+                    echo "<script>alert('Imagem não encontrada após o cadastro.');</script>";
+                }
+
+                $stmtConsulta->close();
+            } else {
+                echo "<script>alert('Erro ao cadastrar o anúncio: " . $stmt->error . "');</script>";
+            }
+            $stmt->close();
+        } else {
+            echo "<script>alert('Erro: Imagem inválida.');</script>";
+        }
     }
 }
 ?>
+
 <head>
     <meta charset="UTF-8">
     <title>A3 - TravelBnB</title>
@@ -48,9 +86,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <body>
 <div class="container">
     <header class="header-main">
-         <div class="login-button">
-            <button><a href="http://localhost/A3---Projeto-AirBNB/logout.php"> <i class="fa-solid fa-right-from-bracket"></i>Logout </a></i></button>
-         </div>
+    <?php 
+    if(!isset($_SESSION["id_usuario"]) || !isset($_SESSION["nome_usuario"])) {
+        echo "<div class='login-button'>
+            <a href='http://localhost/A3---Projeto-AirBNB/login-page/login-page.php'> 
+            <button>Faça login <i class='fa-solid fa-user'></i></button>
+            </div>";
+    }else{
+        $nome_usuario = $_SESSION["nome_usuario"];
+        echo "<div class='welcome-message'>
+                <p>Olá, $nome_usuario</p>
+              </div>";
+    }
+    ?>
     </header>
 
     <div class="container">
@@ -128,7 +176,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <label>
                         <div class="input-style img">
                             <p>Fotos do imóvel:</p>
-                            <input type="file" id="imagem" name="imagem" accept="image/*">
+                            <input type="file" id="imagem" name="imagem" accept="image/*" required>
                         </div>
                     </label>
                 </div>
@@ -142,6 +190,3 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </div>
 </body>
 </html>
-
-
-        
