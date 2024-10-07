@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+    
 <?php
 include ('C:\xampp\htdocs\A3---Projeto-AirBNB\config.php');
 require ('C:\xampp\htdocs\A3---Projeto-AirBNB\verify.php');
+
 
 $id = $_SESSION["id_usuario"];
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -22,56 +24,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         echo "<script>alert('Todos os campos são obrigatórios!');</script>";
     } else {
         $imagem = null;
-        if (isset($_FILES['imagem']) && $_FILES['imagem']['error'] === UPLOAD_ERR_OK) {
-            $tipoArquivo = mime_content_type($_FILES['imagem']['tmp_name']);
-            $tamanhoArquivo = $_FILES['imagem']['size'];
+    if (!empty($_FILES['imagem']['tmp_name'])) {
+        $imagem = addslashes(file_get_contents($_FILES['imagem']['tmp_name']));
+    } else {
+        $imagem = null;
+    }
 
-            if (($tipoArquivo == 'image/png' || $tipoArquivo == 'image/jpeg') && $tamanhoArquivo <= 2097152) {
-                $imagem = file_get_contents($_FILES['imagem']['tmp_name']);
-                if ($imagem === false) {
-                    echo "<script>alert('Erro ao carregar a imagem.');</script>";
-                    $imagem = null;
-                } else {
-                    echo "<script>console.log('Imagem carregada com sucesso, tamanho: " . strlen($imagem) . " bytes.');</script>";
-                }
-            } else {
-                echo "<script>alert('A imagem deve ser JPG/PNG e menor que 2MB.');</script>";
-                $imagem = null;
-            }
-        } else {
-            echo "<script>alert('Erro ao fazer upload da imagem.');</script>";
-            return;
-        }
-        if ($imagem !== null) {
-            $inserir = "INSERT INTO anuncios (criador, hospedes, quarto, camas, banheiros, contato, localidade, valor, imagem, descricao, status) 
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            $stmt = $con->prepare($inserir);
-            $stmt->bind_param("iiiiiissbss", $id, $hospedes, $quarto, $camas, $banheiros, $contato, $localidade, $valor, $imagem, $descricao, $status);
+    $sql = "INSERT INTO anuncios (criador, hospedes, quarto, camas, banheiros, contato, localidade, valor, imagem, descricao, status) 
+            VALUES ('$id', '$hospedes', '$quarto', '$camas', '$banheiros', '$contato', '$localidade', '$valor', '$imagem', '$descricao', '$status')";
+    if (mysqli_query($con, $sql)) {
 
-            if ($stmt->execute()) {
-                echo "<script>alert('Anúncio cadastrado com sucesso!');</script>";
-                $ultimoId = $con->insert_id;
-                $consulta = "SELECT imagem FROM anuncios WHERE id = ?";
-                $stmtConsulta = $con->prepare($consulta);
-                $stmtConsulta->bind_param("i", $ultimoId);
-                $stmtConsulta->execute();
-                $stmtConsulta->bind_result($imagemCadastrada);
-                $stmtConsulta->fetch();
-
-                if ($imagemCadastrada) {
-                    $imagemBase64 = base64_encode($imagemCadastrada);
-                    echo "<div><h3>Imagem cadastrada:</h3><img src='data:image/jpeg;base64,{$imagemBase64}' alt='Imagem cadastrada' /></div>"; 
-                } else {
-                    echo "<script>alert('Imagem não encontrada após o cadastro.');</script>";
-                }
-
-                $stmtConsulta->close();
-            } else {
-                echo "<script>alert('Erro ao cadastrar o anúncio: " . $stmt->error . "');</script>";
-            }
-            $stmt->close();
-        } else {
-            echo "<script>alert('Erro: Imagem inválida.');</script>";
+        echo "<script>alert('Dados inseridos com sucesso!');</script>";
+    } else {
+        echo "<script>alert('Erro ao inserir os dados:');</script>". mysqli_error($con);
         }
     }
 }

@@ -64,9 +64,11 @@ session_start();
                     ? 'Meus anúncios' 
                     : ($_SESSION["nivel_usuario"] === 'ADM' ? 'Anúncios pendentes' : 'Meus anúncios'); ?> 
             </a></li>
-            <li><a href="http://localhost/A3---Projeto-AirBNB/logout.php"> 
-                <i class="fa-solid fa-right-from-bracket"></i>Logout </a>
-            </li>
+            <?php if (isset($_SESSION["id_usuario"])): ?><li>
+                <a href='http://localhost/A3---Projeto-AirBNB/logout.php'>
+                    <i class='fa-solid fa-right-from-bracket'></i> Logout
+                </a>
+            </li><?php endif; ?>
         </ul>
     </nav>
 

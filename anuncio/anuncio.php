@@ -5,8 +5,8 @@ include ('C:\xampp\htdocs\A3---Projeto-AirBNB\config.php');
 session_start();
 
 $id_anuncio = isset($_GET['id']) ? intval($_GET['id']) : 0;
-$user = $_SESSION["id_usuario"];
-$nivel = $_SESSION["nivel_usuario"];
+$user = @$_SESSION["id_usuario"];
+$nivel = @$_SESSION["nivel_usuario"];
 
 if ($id_anuncio > 0) {
     $sql = "SELECT criador, hospedes, quarto, camas, banheiros, contato, localidade, valor, descricao, imagem, status 
