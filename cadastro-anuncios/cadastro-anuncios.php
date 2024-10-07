@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         echo "<script>alert('Dados inseridos com sucesso!');</script>";
     } else {
-        echo "<script>alert('Erro ao inserir os dados:');</script>". mysqli_error($con);
+        echo "<script>alert('Erro ao inserir os dados: " . mysqli_error($con) . "');</script>";
         }
     }
 }

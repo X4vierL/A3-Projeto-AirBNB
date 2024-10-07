@@ -31,9 +31,11 @@ session_start();
                 <input type="text" name="localidade" id="Localidade" placeholder="Localidade">
                 <i class="fa-solid fa-location-dot"></i>
             </label>
-            <label class="filter-label">
-                <input type="submit" name="botao" value="gerar">
-                <i class="fa-solid fa-location-dot"></i>
+            <label class="filter-label-search">
+                <div class="container-icon-filter">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="submit" name="botao" value="Buscar">
+                </div>
             </label>
         </form>
     </div>
@@ -100,34 +102,38 @@ session_start();
                 }
             }
             $result = $con->query($sql);
-            
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
                     $anuncio_link = "http://localhost/A3---Projeto-AirBNB/anuncio/anuncio.php?id=" . $row['id'];
                     echo "<div class='card'>";
-                    echo "<a href='" . $anuncio_link . "'>";
-                    
-                    if ($row['imagem']) {
-                        $imagemBase64 = base64_encode($row['imagem']);
-                        echo '<img src="data:image/png;base64,' . $imagemBase64 . '" alt="Imagem" />';
-                    } else {
-                        echo "Imagem não encontrada.";
-                    }
-                    echo "<div class='card-text-content'>";
-                    echo "<div class='info-value'>";
-                    echo "<p>" . $row['localidade'] . "</p>";
-                    echo "<p>Contato: " . $row['contato'] . "</p>";
-                    echo "<p>Valor: R$ " . $row['valor'] . "</p>";
-                    echo "</div>";
-                    echo "<div class='rooms-value'>";
-                    echo "<div class='values'>";
-                    echo "<i class='fa-solid fa-bed'><p>"  . $row['camas'] ."</p></i>";
-                    echo "</div>";
-                    echo "<div class='values'>";
-                    echo "<i class='fa-solid fa-toilet'><p>"  . $row['banheiros'] ."</p></i>";
-                    echo "</div>";
-                    echo "</div>";
-                    echo "</div>";
+                        echo "<a href='" . $anuncio_link . "'>";
+                            echo "<div class='card-image-content'>";
+                                if (!empty($row['imagem'])) {
+                                    $finfo = finfo_open(FILEINFO_MIME_TYPE);
+                                    $mimeType = finfo_buffer($finfo, $row['imagem']);
+                                    finfo_close($finfo);
+                                
+                                    $imagemBase64 = base64_encode($row['imagem']);
+                                    echo "<img src='data:$mimeType;base64,$imagemBase64' alt='Imagem'/>";
+                                } else {
+                                    echo "Imagem não encontrada.";
+                                }
+                        echo "</div>";
+                        echo "<div class='card-text-content'>";
+                            echo "<div class='info-value'>";
+                                echo "<p>" . $row['localidade'] . "</p>";
+                                echo "<p>Contato: " . $row['contato'] . "</p>";
+                                echo "<p>Valor: R$ " . $row['valor'] . "</p>";
+                            echo "</div>";
+                            echo "<div class='rooms-value'>";
+                                echo "<div class='values'>";
+                                    echo "<i class='fa-solid fa-bed'><p>"  . $row['camas'] ."</p></i>";
+                                echo "</div>";
+                                echo "<div class='values'>";
+                                    echo "<i class='fa-solid fa-toilet'><p>"  . $row['banheiros'] ."</p></i>";
+                                echo "</div>";
+                            echo "</div>";
+                        echo "</div>";
                     echo "</div>";
                 }
             } else {

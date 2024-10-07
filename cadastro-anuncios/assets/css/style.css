@@ -47,6 +47,10 @@
   .header-main .login-button button:hover{
     background-color: var(--colorFocus);
   }
+  .welcome-message p{
+    display: block;
+    transform: translateX(-1.5rem);
+  }
   .container {
     position: relative;
     height: 100%;
