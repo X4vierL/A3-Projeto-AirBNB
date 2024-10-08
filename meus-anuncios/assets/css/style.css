@@ -150,6 +150,8 @@ body{
     width: 40%;
     height: 100%;
     background-color: white;
+    overflow: hidden;
+
 
   }
   .no-image{
@@ -160,6 +162,7 @@ body{
     color: var(--primaryColor);
   }
   img{
-    width: 200px;
-    /* background-color: white; */
+    width: 100%;
+    object-fit: cover;
+    height: 100%;
 }

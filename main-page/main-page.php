@@ -137,7 +137,9 @@ session_start();
                     echo "</div>";
                 }
             } else {
-                echo "Nenhum anúncio encontrado.";
+                echo "<div class='sem-anuncio'>";
+                    echo "<p>Nenhum anúncio encontrado.</p>";
+                echo "</div>";
             }
             
             ?>
