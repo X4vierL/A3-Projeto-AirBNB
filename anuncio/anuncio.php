@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html lang="pt-br">
 <?php 
 include ('C:\xampp\htdocs\A3---Projeto-AirBNB\config.php');
 session_start();
 
 $id_anuncio = isset($_GET['id']) ? intval($_GET['id']) : 0;
-$user = @$_SESSION["id_usuario"];
 $nivel = @$_SESSION["nivel_usuario"];
 
 if ($id_anuncio > 0) {
@@ -42,6 +39,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 ?>
+<!DOCTYPE html>
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -76,36 +75,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <h3>Contato</h3>
                 <p><strong>Telefone:</strong> <?php echo htmlspecialchars($anuncio['contato']); ?></p>
                 <p class="valor">Valor: R$ <?php echo number_format($anuncio['valor'], 2, ',', '.'); ?></p>
-                
-                <form action="" method="POST" class="status-update">
-                    <button id="botao-aprovar" type="submit" value="aprovar" name="button" class="button">Aprovar</button>
-                    <button id="botao-reprovar" type="submit" value="reprovar" name="button" class="button">Reprovar</button>
-                </form>
+
+                <?php if (isset($_SESSION['nivel_usuario']) && $_SESSION['nivel_usuario'] === 'ADM'): ?>
+                    <form action="" method="POST" class="status-update">
+                        <button id="botao-aprovar" type="submit" value="aprovar" name="button" class="button">Aprovar</button>
+                        <button id="botao-reprovar" type="submit" value="reprovar" name="button" class="button">Reprovar</button>
+                    </form>
+                <?php endif; ?>
             </div>
         </div>
     </div>
 </div>
 
 <a href="http://localhost/A3---Projeto-AirBNB/main-page/main-page.php"> Home </a>
-
-<script>
-    var nivelUsuario = '<?php echo $_SESSION["nivel_usuario"]; ?>';
-
-    function verificarNivelUsuario() {
-        var botaoAprovar = document.getElementById("botao-aprovar");
-        var botaoReprovar = document.getElementById("botao-reprovar");
-
-        if (nivelUsuario === "ADM") {
-            botaoAprovar.style.display = "inline-block";
-            botaoReprovar.style.display = "inline-block";
-        } else {
-            botaoAprovar.style.display = "none";
-            botaoReprovar.style.display = "none";
-        }
-    }
-
-    window.onload = verificarNivelUsuario;
-</script>
 
 </body>
 </html>

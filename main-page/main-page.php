@@ -79,15 +79,15 @@ session_start();
         <div class="container-cards">
             <?php
             $sql = "SELECT id, criador, hospedes, quarto, camas, banheiros, contato, localidade, valor, imagem, descricao, status FROM anuncios WHERE status = 'aprovado'";
-            if (isset($_POST['botao']) && $_POST['botao'] == "gerar") {
+            if (isset($_POST['botao']) && $_POST['botao'] == "Buscar") {
                 $filtros = [];
                 if (!empty($_POST['hospedes'])) {
                     $n_hosp = intval($_POST['hospedes']);
-                    $filtros[] = "hospedes >= $n_hosp";
+                    $filtros[] = "hospedes = $n_hosp";
                 }
                 if (!empty($_POST['quartos'])) {
                     $n_quart = intval($_POST['quartos']);
-                    $filtros[] = "quarto >= $n_quart";
+                    $filtros[] = "quarto = $n_quart";
                 }
                 if (!empty($_POST['valor'])) {
                     $val_max = floatval($_POST['valor']);
