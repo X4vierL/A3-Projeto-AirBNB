@@ -1,49 +1,195 @@
-.anuncio-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+:root{
+  --primaryColor: #b2680e;
+  --primaryColorOpa: #b2680ec5;
+  --colorFocus: #FCA61C;
 }
-.anuncio-header {
+*{
+  font-family: 'Poppins', sans-serif;
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+  text-decoration: none;
+}
+body{
+  height: 100vh;
+}
+.header-main {
+  color: white;
+  padding: 1rem;
+  background-color: var(--primaryColor);
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  width: calc(100% - 250px); 
+  margin-left: 250px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+}
+.welcome-message p{
+  display: block;
+  transform: translateX(-1.5rem);
+}
+.container {
+  /* display: flex; */
+  /* flex-direction: column; */
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 250px;
+  margin-top: 3rem;
+}
+.container .title{
+  color: var(--primaryColor);
+  margin: 6rem 0 2rem 0;
+}
+.container .sidebar{
+  width: 250px;
+  height: 100vh; 
+  background: linear-gradient(180deg, rgba(178,104,14,1) 10%, var(--primaryColorOpa) 90%);
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 0 0 0;
+  /* margin-right: 10rem;  */
+}
+
+.sidebar .logo{
+  color: white;
+  padding: 1rem;
+  font-size: 1.5rem;
+  text-align: center;
+  transform: translateY(-1rem); 
+}
+
+.sidebar ul{
+  margin-top: 25rem;
+  padding: 0;
+  list-style-type: none;
+  text-align: center;
+  width: 100%;
+}
+
+.sidebar ul li{
+  margin-bottom: 1.5rem;
+}
+
+.sidebar ul li a{
+  color: white;
+  font-size: 1.1rem;
+  text-decoration: none;
+  display: block;
+  padding: 0.5rem;
+  transition: 0.3s ease-in-out;
+}
+
+.sidebar ul li a:hover{
+  background-color: var(--primaryColor);
+  border-radius: 5px;
+}
+.anuncio-container{
+  width: 80%;
+  border-radius: 1rem;
+  background-color: var(--primaryColorOpa);
+  box-shadow: 0 0 15px black;
+  box-sizing: border-box;
+  padding: 1rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: .3rem;
 }
-.anuncio-header h1 {
-  font-size: 2rem;
+
+.anuncio-text-container{
+  box-sizing: border-box;
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  color: white;
 }
-.anuncio-header p {
-  font-size: 1.2rem;
-  color: #666;
-}
-.anuncio-imagem img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 8px;
-}
-.anuncio-info {
-  margin-top: 20px;
-}
-.anuncio-info h2 {
-  font-size: 1.8rem;
-  margin-bottom: 10px;
-}
-.anuncio-info p {
-  margin-bottom: 10px;
-}
-.anuncio-details {
+.anuncio-info-title{
+  width: 100%;
   display: flex;
   justify-content: space-between;
-  margin-top: 20px;
-}
-.anuncio-details div {
-  flex: 1;
-  margin-right: 20px;
-}
-.anuncio-details div:last-child {
-  margin-right: 0;
-}
-.valor {
-  font-size: 1.6rem;
   font-weight: bold;
-  color: #27ae60;
+  font-size: 1.4rem;
+  letter-spacing: 1.2px;
+  margin: 1rem 0;
+}
+.anuncio-info-title .status{
+  /* text-decoration: underline; */
+}
+.anuncio-info-title .status span{
+  color: var(--primaryColor);
+  text-decoration: underline;
+  text-transform: uppercase;
+}
+.box-details-contact{
+  width: 100%;
+  display: flex;
+  gap: 1rem;
+  margin: 0 0 1rem 0;
+  justify-content: space-between;
+}
+.box-details-contact .details{
+  display: flex;
+  gap: 1rem;
+}
+.box-details-contact .details span{
+  font-weight: bolder;
+}
+.box-details-contact .contact{
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  /* font-weight: bold; */
+}
+.box-details-contact .contact span{
+  font-weight: bold;
+}
+.anuncio-container .describe span{
+  /* background-color: blue; */
+  font-weight: bold;
+  font-size: 1.4rem;
+  /* letter-spacing: 1.1px; */
+  text-decoration: underline;
+}
+.anuncio-container .aprove{
+  width: 100%;
+  padding: 1.2rem 0;
+  /* background-color: red; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.aprove .status-update{
+  display: flex;
+  gap: 2rem;
+}
+.aprove .status-update button{
+  padding: .5rem 1.2rem;
+  background-color: transparent;
+  border: none;
+  font-weight: bold;
+  color: white;
+  transition: 0.3s ease-in-out;
+  cursor: pointer;
+  border-radius: 1rem;
+}
+.aprove .status-update button:hover{
+  transform: scale(1.03)
+}
+.aprove .status-update .aprove{
+  background-color: green;
+}
+.aprove .status-update .reprove{
+  background-color: red;
 }
