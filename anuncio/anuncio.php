@@ -4,6 +4,7 @@ session_start();
 
 $id_anuncio = isset($_GET['id']) ? intval($_GET['id']) : 0;
 $nivel = @$_SESSION["nivel_usuario"];
+$id_usuario = @$_SESSION["id_usuario"];
 
 if ($id_anuncio > 0) {
     $sql = "SELECT criador, hospedes, quarto, camas, banheiros, contato, localidade, valor, descricao, imagem, status 
@@ -21,7 +22,7 @@ if ($id_anuncio > 0) {
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($_POST["button"] == "aprovar") {
-        $inserir = "UPDATE anuncios SET status = 'aprovado' WHERE status = 'pendente' and id = '$id_anuncio'";
+        $inserir = "UPDATE anuncios SET status = 'aprovado' WHERE  id = '$id_anuncio'";
         $result_inserir = mysqli_query($con, $inserir);
         if ($result_inserir) {
             echo "<script>alert('Anúncio aprovado!');</script>";
@@ -29,12 +30,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             echo "<script>alert('Erro ao aprovar anúncio.');</script>";
         }
     } else if ($_POST["button"] == "reprovar") {
-        $inserir = "UPDATE anuncios SET status = 'reprovado' WHERE status = 'pendente' and id = '$id_anuncio'";
+        $inserir = "UPDATE anuncios SET status = 'reprovado' WHERE id = '$id_anuncio'";
         $result_inserir = mysqli_query($con, $inserir);
         if ($result_inserir) {
             echo "<script>alert('Anúncio reprovado.');</script>";
         } else {
             echo "<script>alert('Erro ao reprovar anúncio.');</script>";
+        }
+    } else if($_POST["button"] == "excluir") {
+        $deletar = "DELETE from anuncios WHERE id = '$id_anuncio'";
+        $result_deletar = mysqli_query($con, $deletar);
+        if ($result_deletar) {
+            echo "<script>
+                alert('Anúncio excluído.');
+                setTimeout(function() {
+                    window.location.href = 'http://localhost/A3---Projeto-AirBNB/meus-anuncios/meus-anuncios.php';
+                }, 1);
+            </script>";        
+        } else {
+            echo "<script>alert('Erro ao excluir anúncio.');</script>";
         }
     }
 }
@@ -86,7 +100,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="anuncio-text-container">
                 <div class="anuncio-info-title">
                     <p><?php echo htmlspecialchars($anuncio['localidade']); ?></p>
-                    <p class="status">Status: <span><?php echo htmlspecialchars($anuncio['status']); ?></span></p>
+                    <?php if($nivel === 'ADM' || $anuncio['criador'] === $id_usuario) { ?>
+                        <p class='status'>Status: <span><?php echo htmlspecialchars($anuncio['status']); ?></span></p>
+                    <?php } ?>
                 </div>
                 <div class="box-details-contact">
                     <div class="details">
@@ -109,12 +125,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <p><span>Descrição do imóvel: </span> <?php echo htmlspecialchars($anuncio['descricao']); ?></p>
                 </div>
                 <div class="aprove">
-                        <?php if (isset($_SESSION['nivel_usuario']) && $_SESSION['nivel_usuario'] === 'ADM'): ?>
-                            <form action="" method="POST" class="status-update">
+                    <?php if (isset($_SESSION['nivel_usuario']) && $_SESSION['nivel_usuario'] === 'ADM'): ?>
+                        <form action="" method="POST" class="status-update">
+                            <?php if ($anuncio['status'] === 'pendente'): ?>
                                 <button id="botao-aprovar" type="submit" value="aprovar" name="button" class="aprove">Aprovar</button>
                                 <button id="botao-reprovar" type="submit" value="reprovar" name="button" class="reprove">Reprovar</button>
-                            </form>
-                        <?php endif; ?>
+                            <?php elseif ($anuncio['status'] === 'aprovado'): ?>
+                                <button id="botao-reprovar" type="submit" value="reprovar" name="button" class="reprove">Reprovar</button>
+                            <?php elseif ($anuncio['status'] === 'reprovado'): ?>
+                                <button id="botao-aprovar" type="submit" value="aprovar" name="button" class="aprove">Aprovar</button>
+                                <button id="botao-excluir" type="submit" value="excluir" name="button" class="reprove">Excluir</button>
+                            <?php endif; ?>
+                        </form>
+                    <?php endif; ?>
                 </div>
             </div>
             <div class="anuncio-image-container">
