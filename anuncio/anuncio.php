@@ -1,5 +1,6 @@
 <?php 
 include ('C:\xampp\htdocs\A3---Projeto-AirBNB\config.php');
+
 session_start();
 
 $id_anuncio = isset($_GET['id']) ? intval($_GET['id']) : 0;

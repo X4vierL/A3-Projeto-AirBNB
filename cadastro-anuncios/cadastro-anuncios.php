@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $camas = trim($_POST['camas'] ?? '');
     $banheiros = trim($_POST['banheiros'] ?? '');
     $contato = trim($_POST['contato'] ?? '');
-    $localidade = trim($_POST['localidade'] ?? '');
+    $localidade = trim(($_POST['estado'] . ', ' . $_POST['cidade']) ?? '');
     $valor = trim($_POST['valor'] ?? '');
     $descricao = trim($_POST['descricao'] ?? '');
     $status = 'pendente';
@@ -90,45 +90,56 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </label>
                     <label>
                         <div class="input-style hover-effect">
-                            <input type="text" id="localidade" name="localidade" maxlength="20" placeholder="Localidade" required>
+                            <select id="estado" name="estado" required>
+                                <option value="">Selecione um estado</option>
+                            </select>
                             <i class="fa-solid fa-location-dot"></i>
                         </div>
                     </label>
                     <label>
                         <div class="input-style hover-effect">
-                            <input type="number" id="valor" name="valor" placeholder="Valor (em reais)" required>
-                            <i class="fa-solid fa-dollar-sign"></i>
+                            <select id="cidade" name="cidade" required disabled>
+                                <option value="">Selecione uma cidade</option>
+                            </select>
+                            <i class="fa-solid fa-location-dot"></i>
                         </div>
+                    </label>
+                    <label>
+                    <div class="input-style hover-effect">
+                        <input type="number" id="valor" name="valor" min="1" placeholder="Valor (em reais)" required>
+                        <i class="fa-solid fa-dollar-sign"></i>
+                    </div>
                     </label>
                 </div>
                 <div class="input-group-two-row">
                     <label>
+                    <div class="input-group-two-row">
                         <div class="input-style hover-effect">
-                            <input type="number" id="hospedes" name="hospedes" placeholder="N° de Hóspedes" required>
+                            <input type="number" id="hospedes" name="hospedes" min="1" placeholder="N° de Hóspedes" required>
                             <i class="fa-solid fa-people-roof"></i>
                         </div>
                     </label>
                     <label>
                         <div class="input-style hover-effect">
-                            <input type="number" id="quarto" name="quarto" placeholder="N° de Quartos" required>
+                            <input type="number" id="quarto" name="quarto" min="1" placeholder="N° de Quartos" required>
                             <i class="fa-solid fa-restroom"></i>
                         </div>
+                    </div>
                     </label>
                 </div>
                 <div class="input-group-two-row">
                     <label>
                         <div class="input-style hover-effect">
-                            <input type="number" id="camas" name="camas" placeholder="N° de Camas" required>
+                            <input type="number" id="camas" name="camas" placeholder="N° de Camas" min='1' required>
                             <i class="fa-solid fa-bed"></i>
                         </div>
                     </label>
                     <label>
-                        <div class="input-style hover-effect">
-                            <input type="number" id="banheiros" name="banheiros" placeholder="N° de Banheiros" required>
+                    <div class="input-style hover-effect">
+                            <input type="number" id="banheiros" name="banheiros" min="1" placeholder="N° de Banheiros" required>
                             <i class="fa-solid fa-toilet"></i>
                         </div>
-                    </label>
-                </div>
+                    </div>
                 <div class="input-group-one-row">
                     <label>
                         <div class="input-style text-area">
@@ -155,3 +166,46 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </div>
 </body>
 </html>
+<script>
+function carregarEstados() {
+    fetch('https://servicodados.ibge.gov.br/api/v1/localidades/estados')
+        .then(response => response.json())
+        .then(estados => {
+            const estadoSelect = document.getElementById('estado');
+            estados.forEach(estado => {
+                const option = document.createElement('option');
+                option.value = estado.sigla;
+                option.text = estado.nome;
+                estadoSelect.appendChild(option);
+            });
+        });
+}
+
+function carregarCidades(estadoSigla) {
+    fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${estadoSigla}/municipios`)
+        .then(response => response.json())
+        .then(cidades => {
+            const cidadeSelect = document.getElementById('cidade');
+            cidadeSelect.innerHTML = '<option value="">Selecione uma cidade</option>';
+            cidades.forEach(cidade => {
+                const option = document.createElement('option');
+                option.value = cidade.nome;
+                option.text = cidade.nome;
+                cidadeSelect.appendChild(option);
+            });
+            cidadeSelect.disabled = false;
+        });
+}
+
+document.getElementById('estado').addEventListener('change', function() {
+    const estadoSigla = this.value;
+    if (estadoSigla) {
+        carregarCidades(estadoSigla);
+    } else {
+        document.getElementById('cidade').innerHTML = '<option value="">Selecione uma cidade</option>';
+        document.getElementById('cidade').disabled = true;
+    }
+});
+
+window.onload = carregarEstados;
+</script>
