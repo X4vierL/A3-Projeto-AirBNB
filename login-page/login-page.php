@@ -54,6 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             if ($result_login) {
                 if (mysqli_num_rows($result_login) > 0) {
+<<<<<<< Updated upstream
                     while($coluna = mysqli_fetch_array($result_login)){
                         $_SESSION["id_usuario"] = $coluna["id"];
                         $_SESSION["nome_usuario"] = $coluna["nome"];
@@ -61,6 +62,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         header("Location: http://localhost/A3---Projeto-AirBNB/main-page/main-page.php");
                         exit;
                 }} else {
+=======
+                    $coluna = mysqli_fetch_array($result_login);
+                    $_SESSION["id_usuario"] = $coluna["id"];
+                    $_SESSION["nome_usuario"] = $coluna["login"];
+                    header("Location: http://localhost/A3---Projeto-AirBNB/main-page/main-page.php");
+                    exit; 
+                } else {
+>>>>>>> Stashed changes
                     echo "<script>alert('Usuário ou senha incorretos!');</script>";
                 }
             } else {
